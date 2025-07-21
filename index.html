@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leron | Cybersecurity Expert & Developer</title>
+  
+  <!-- Security Meta Tags -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://formspree.io 'unsafe-inline' 'unsafe-eval';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data:;
+    connect-src 'self' https://formspree.io;
+    frame-src 'none';
+    object-src 'none';
+  ">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Orbitron&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0a0f1a;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    /* Theme Toggle */
+    #themeToggle {
+      position: fixed;
+      top: 20px; right: 20px;
+      background: #00ffe1;
+      border: none;
+      border-radius: 50%;
+      width: 45px; height: 45px;
+      cursor: pointer;
+      box-shadow: 0 0 12px #00ffe1;
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      color: #0a0f1a;
+      transition: background 0.3s, color 0.3s;
+    }
+    #themeToggle:hover {
+      background: #00b8a9;
+      box-shadow: 0 0 20px #00b8a9;
+    }
+
+    body.light {
+      background: #f2f2f2;
+      color: #121212;
+    }
+    body.light #themeToggle {
+      background: #121212;
+      color: #00ffe1;
+      box-shadow: 0 0 12px #121212;
+    }
+    body.light #themeToggle:hover {
+      background: #000;
+      box-shadow: 0 0 20px #121212;
+    }
+    body.light .project-card {
+      background: #f0f0f0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    body.light .project-card p {
+      color: #333;
+    }
+    body.light input,
+    body.light textarea {
+      background: #e0e0e0;
+      color: #121212;
+    }
+
+    /* Header */
+    header {
+      height: 100vh;
+      background: linear-gradient(135deg, #001a16 0%, #00332c 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      color: #00ffe1;
+      font-family: 'Orbitron', sans-serif;
+      box-shadow: inset 0 0 300px rgba(0, 0, 0, 0.8);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(0, 255, 225, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(0, 255, 225, 0.1) 0%, transparent 20%),
+        linear-gradient(135deg, #001a16 0%, #00332c 100%);
+    }
+
+    header h1 {
+      font-size: 4rem;
+      letter-spacing: 10px;
+      text-shadow: 0 0 10px #00ffe1, 0 0 20px #00ffe1;
+      margin-bottom: 10px;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    header h2 {
+      font-weight: 300;
+      font-size: 1.5rem;
+      color: #ccfffbdd;
+      font-family: 'Poppins', sans-serif;
+      min-height: 40px;
+      padding: 0 10px;
+      display: inline-block;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #00ffe1, 0 0 10px #00ffe1; }
+      to { text-shadow: 0 0 20px #00ffe1, 0 0 40px #00ffe1; }
+    }
+
+    /* Typing Effect */
+    .typing {
+      border-right: 3px solid #00ffe1;
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 0 auto;
+      animation: typing 4s steps(30) infinite, blink 0.75s step-end infinite;
+    }
+
+    @keyframes typing {
+      0%, 100% { width: 0; }
+      50% { width: 100%; }
+    }
+    @keyframes blink {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #00ffe1; }
+    }
+
+    /* Navigation */
+    nav {
+      background: #020612dd;
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px 0;
+      z-index: 100;
+      box-shadow: 0 0 15px #00ffe1aa;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: #00ffe1;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 1rem;
+      text-decoration: none;
+      letter-spacing: 2px;
+      transition: color 0.3s;
+      position: relative;
+      padding: 5px 0;
+    }
+    nav a::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background: #00ffe1;
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+      left: 0;
+    }
+    nav a:hover {
+      color: #fff;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1100;
+      background: #00ffe1;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 12px #00ffe1;
+      transition: transform 0.3s;
+    }
+    .hamburger:hover {
+      transform: scale(1.1);
+    }
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: #0a0f1a;
+      margin: 2px 0;
+      transition: 0.3s;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 70%;
+      height: 100vh;
+      background: #020612ee;
+      z-index: 1050;
+      display: flex;
+      flex-direction: column;
+      padding: 80px 20px 20px;
+      transition: left 0.4s ease;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    .mobile-nav.active {
+      left: 0;
+    }
+    .mobile-nav a {
+      color: #00ffe1;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 1.2rem;
+      text-decoration: none;
+      letter-spacing: 2px;
+      padding: 15px;
+      margin: 5px 0;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .mobile-nav a:hover,
+    .mobile-nav a.active {
+      background: #00ffe122;
+    }
+
+    /* Sections */
+    section {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    section h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffe1;
+      font-size: 2.8rem;
+      margin-bottom: 25px;
+      border-bottom: 3px solid #00ffe1;
+      padding-bottom: 5px;
+      letter-spacing: 2px;
+    }
+    section p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: inherit;
+    }
+
+    /* Skills */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .skills span {
+      background: #00ffe1;
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      box-shadow: 0 0 10px #00ffe1aa;
+      user-select: none;
+      transition: transform 0.3s;
+      cursor: default;
+    }
+    .skills span:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #00fff1;
+    }
+
+    /* Projects */
+    #projects {
+      background: #121212;
+      color: #e0e0e0;
+      padding: 50px 20px;
+    }
+    #projects h2 {
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 40px;
+      color: #00ffe1;
+    }
+    .projects-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .project-card {
+      background: #1f1f1f;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0,255,225,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0,255,225,0.35);
+    }
+    .project-card h3 {
+      margin-bottom: 15px;
+      color: #00ffe1;
+      font-size: 1.8rem;
+    }
+    .project-card p {
+      flex-grow: 1;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+    .project-card .btn {
+      background: #00ffe1;
+      color: #121212;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-align: center;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      width: fit-content;
+    }
+    .project-card .btn:hover {
+      background: #00bfa1;
+      color: white;
+    }
+
+    /* Contact */
+    #contact {
+      text-align: center;
+    }
+    #contact p {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #contact a {
+      color: #00ffe1;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    #contact a:hover {
+      color: #00fff1;
+    }
+
+    /* Form */
+    form {
+      max-width: 600px;
+      margin: 30px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input, textarea {
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      resize: none;
+      box-shadow: 0 0 8px #00ffe144;
+      background: #111a21;
+      color: #f0f0f0;
+      transition: box-shadow 0.3s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 12px #00ffe1;
+      background: #121f29;
+    }
+    button {
+      padding: 15px;
+      background: #00ffe1;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #000;
+      box-shadow: 0 0 20px #00ffe1aa;
+      transition: background 0.3s;
+      min-height: 44px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #00b8a9;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #00ffe1aa;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-top: 1px solid #00ffe144;
+      margin-top: 50px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 3.5rem;
+        letter-spacing: 8px;
+      }
+      header h2 {
+        font-size: 1.3rem;
+        min-height: 50px;
+      }
+      section h2 {
+        font-size: 2.3rem;
+      }
+      .skills span {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+      form {
+        max-width: 100%;
+      }
+
+      /* Hamburger menu mobile */
+      .hamburger {
+        display: flex;
+      }
+      nav {
+        display: none;
+      }
+
+      /* Project grid */
+      .projects-container {
+        grid-template-columns: 1fr;
+      }
+
+      /* Theme button size */
+      #themeToggle {
+        width: 55px;
+        height: 55px;
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2.5rem;
+        letter-spacing: 5px;
+      }
+      header h2 {
+        font-size: 1.1rem;
+      }
+      section {
+        margin: 40px auto;
+      }
+      section h2 {
+        font-size: 2rem;
+      }
+
+      .typing {
+        white-space: normal;
+        border-right: none;
+        animation: none;
+      }
+
+      /* Form inputs */
+      input, textarea, button {
+        padding: 12px;
+      }
+    }
+  </style>
+  
+  <!-- Clickjacking protection -->
+  <style id="anti-clickjack">body{display:none !important;}</style>
+</head>
+<body>
+
+  <div class="hamburger" aria-label="Open Menu" role="button" tabindex="0">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="mobile-nav">
+    <a href="#about" class="active">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <button id="themeToggle" aria-label="Toggle Theme">🌙</button>
+
+  <header>
+    <h1>Leron</h1>
+    <h2><span id="typed-text" class="typing"></span></h2>
+  </header>
+
+  <nav>
+    <a href="#about" class="active">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      Hello, I'm Leron! A cybersecurity expert specializing in penetration testing and software development. I navigate the dark corners of the security world with passion - finding and patching vulnerabilities, writing code, and optimizing systems is what drives me.
+    </p>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills">
+      <span>Python</span>
+      <span>JavaScript</span>
+      <span>HTML5 & CSS3</span>
+      <span>Linux</span>
+      <span>Metasploit</span>
+      <span>Burp Suite</span>
+      <span>Exploit Development</span>
+      <span>Network Analysis</span>
+      <span>Web Security</span>
+      <span>Reverse Engineering</span>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects-container">
+      <div class="project-card">
+        <h3>Interface Penster Tool</h3>
+        <p>A powerful and comprehensive penetration testing tool with user-friendly interface for professionals.</p>
+        <a href="https://github.com/leronru/interface-pentest-tool.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+      </div>
+
+      <div class="project-card">
+        <h3>InfiNet</h3>
+        <p>Advanced network penetration testing tool with terminal interface, MITM capabilities and automated reporting. 🚀 For educational purposes only.</p>
+        <a href="https://github.com/leronru/InfiNet.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+      </div>
+
+      <div class="project-card">
+        <h3>TrackCell</h3>
+        <p>Performs OSINT analysis on phone numbers. Provides location, carrier, timezone and WhatsApp status. Conducts Google searches and scans related documents. For responsible use and educational purposes only.</p>
+        <a href="https://github.com/leronru/TrackCell.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+      </div>
+
+      <div class="project-card">
+        <h3>LeronLock</h3>
+        <p>Educational tool for initiating Instagram account closure process. Used for ethical hacking and security testing. Unauthorized use is illegal.</p>
+        <a href="https://github.com/leronru/LeronLock.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+      </div>
+
+      <div class="project-card">
+        <h3>Telegram Spam Reporter</h3>
+        <p>Powerful Telegram spam reporting tool with multi-account support, customizable report reasons and automated reporting features. Includes smart delay system to reduce ban risk. Developed by Leronru.</p>
+        <a href="https://github.com/leronru/TG-ReportMaster.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+      </div>
+
+      <div class="project-card">
+        <h3>SpoofMaster</h3>
+        <p>Professional email spoofing tool for security experts and pentesters. Allows sending spoofed emails using Gmail SMTP. Colorful user-friendly interface for educational and testing purposes. Always obtain permission before use.</p>
+        <a href="https://github.com/leronru/SpoofMaster.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Use the form below to get in touch with me:</p>
+
+    <form id="contactForm" action="https://formspree.io/f/mdkzjppg" method="POST">
+      <div class="form-row">
+        <input type="text" id="name" name="name" placeholder="Your Name" required minlength="2" maxlength="50" pattern="[A-Za-zğüşıöçĞÜŞİÖÇ\s]+" title="Please enter a valid name" />
+        <input type="email" id="email" name="email" placeholder="Your Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Please enter a valid email" />
+      </div>
+      <textarea id="message" name="message" rows="5" placeholder="Your Message" required minlength="10" maxlength="1000"></textarea>
+      <input type="hidden" name="_gotcha" style="display:none">
+      <button type="submit">Send</button>
+    </form>
+
+    <p id="formResponse" style="margin-top: 15px;"></p>
+  </section>
+
+  <footer>
+    &copy; 2025 Leron | All Rights Reserved.
+  </footer>
+
+  <script>
+    // Clickjacking protection
+    if (self === top) {
+      document.getElementById('anti-clickjack').remove();
+    } else {
+      top.location = self.location;
+    }
+
+    // Console warning
+    console.log('%c⛔ This area is for security experts only!', 'color: red; font-size: 14px;');
+    
+    // Theme toggler
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+      themeToggle.textContent = document.body.classList.contains('light') ? '🌞' : '🌙';
+    });
+
+    // Check saved theme
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light');
+      themeToggle.textContent = '🌞';
+    }
+
+    // Hamburger menu
+    const hamburger = document.querySelector('.hamburger');
+    const mobileNav = document.querySelector('.mobile-nav');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileNav.classList.toggle('active');
+    });
+
+    // Close menu
+    document.querySelectorAll('.mobile-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+      });
+    });
+
+    // Menu link active state (on scroll)
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('nav a, .mobile-nav a');
+
+    function updateActiveMenu() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').substring(1) === current) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveMenu, { passive: true });
+
+    // Typing effect
+    const words = [
+      "Penetration Tester",
+      "Software Developer",
+      "Cybersecurity Enthusiast",
+      "Ethical Hacker",
+      "Python & JavaScript Expert"
+    ];
+    let wordIndex = 0;
+    let charIndex = 0;
+    const typedText = document.getElementById('typed-text');
+
+    function type() {
+      if(charIndex < words[wordIndex].length) {
+        typedText.textContent += words[wordIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(type, 150);
+      } else {
+        setTimeout(erase, 2000);
+      }
+    }
+
+    function erase() {
+      if(charIndex > 0) {
+        typedText.textContent = words[wordIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(erase, 100);
+      } else {
+        wordIndex++;
+        if(wordIndex >= words.length) wordIndex = 0;
+        setTimeout(type, 500);
+      }
+    }
+
+    // Typing effect on mobile
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.innerWidth > 480) {
+        setTimeout(type, 1000);
+      } else {
+        typedText.textContent = "Cybersecurity Expert";
+      }
+      updateActiveMenu();
+    });
+
+    // Form submission
+    const contactForm = document.getElementById('contactForm');
+    const formResponse = document.getElementById('formResponse');
+
+    // XSS protected sanitization
+    const sanitizeInput = (input) => {
+      if (!input) return '';
+      return input.toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\//g, '&#x2F;');
+    };
+
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Get and sanitize form data
+      const name = sanitizeInput(document.getElementById('name').value.trim());
+      const email = sanitizeInput(document.getElementById('email').value.trim());
+      const message = sanitizeInput(document.getElementById('message').value.trim());
+
+      if (!name || !email || !message) {
+        formResponse.style.color = '#ff5555';
+        formResponse.textContent = 'Please fill all fields.';
+        return;
+      }
+
+      // Send data to formspree.io
+      fetch(contactForm.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          message: message,
+          _subject: 'New Contact Form Message'
+        }),
+        credentials: 'omit',
+        mode: 'cors',
+        cache: 'no-store'
+      })
+      .then(response => {
+        if (response.ok) {
+          formResponse.style.color = '#00ffe1';
+          formResponse.textContent = `Thank you ${name}! Your message has been sent successfully. I'll get back to you soon.`;
+          contactForm.reset();
+        } else {
+          throw new Error('Form submission failed');
+        }
+      })
+      .catch(error => {
+        formResponse.style.color = '#ff5555';
+        formResponse.textContent = 'An error occurred. Please try again later or send an email directly.';
+        console.error('Form submission error:', error);
+      });
+    });
+
+    // External link confirmation
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (!confirm('You are being redirected to an external site. Do you want to continue?')) {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
+</body>
+    </html>
