@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gelişmiş Image to ASCII Converter</title>
+  <style>
+    :root {
+      --primary-color: #0f0;
+      --secondary-color: #0a0;
+      --background-color: #111;
+      --card-bg: #1a1a1a;
+      --text-color: #eee;
+      --border-radius: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      border-bottom: 1px solid var(--primary-color);
+    }
+
+    h1 {
+      color: var(--primary-color);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    }
+
+    .subtitle {
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .card h2 {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card h2 i {
+      font-size: 1.3rem;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--primary-color);
+      border-radius: var(--border-radius);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 20px;
+    }
+
+    .upload-area:hover {
+      background: rgba(0, 255, 0, 0.05);
+    }
+
+    .upload-area i {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .upload-area p {
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      background: var(--primary-color);
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      background: var(--secondary-color);
+      transform: scale(1.05);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 255, 0, 0.1);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .control-group {
+      margin-bottom: 15px;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--secondary-color);
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary-color);
+    }
+
+    .control-group input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #333;
+      background: #222;
+      color: var(--text-color);
+    }
+
+    .control-group select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #333;
+      background: #222;
+      color: var(--text-color);
+    }
+
+    .ascii-output-container {
+      position: relative;
+      overflow: auto;
+      max-height: 500px;
+      border: 1px solid #333;
+      border-radius: var(--border-radius);
+      padding: 15px;
+      background: #000;
+    }
+
+    #ascii-output {
+      white-space: pre;
+      font-family: 'Courier New', monospace;
+      line-height: 1;
+      margin: 0;
+      text-align: center;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      color: #666;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .spinner {
+      border: 4px solid rgba(0, 255, 0, 0.3);
+      border-radius: 50%;
+      border-top: 4px solid var(--primary-color);
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      background: var(--primary-color);
+      color: #000;
+      border-radius: var(--border-radius);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: var(--transition);
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .color-picker {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .color-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition);
+    }
+
+    .color-option.active {
+      border-color: #fff;
+      transform: scale(1.1);
+    }
+
+    .preview-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #imagePreview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: var(--border-radius);
+      display: none;
+    }
+
+    .advanced-controls {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+    }
+
+    .presets {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .preset-btn {
+      background: #222;
+      border: 1px solid #333;
+      color: var(--text-color);
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .preset-btn:hover {
+      background: #333;
+      border-color: var(--primary-color);
+    }
+
+    .preset-btn.active {
+      background: var(--primary-color);
+      color: #000;
+      border-color: var(--primary-color);
+    }
+
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab.active {
+      border-bottom: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .export-options {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .export-option {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 5px;
+      background: #333;
+      border-radius: 5px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      background: var(--primary-color);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🖼️ → ASCII Dönüştürücü</h1>
+      <p class="subtitle">Resimlerinizi ASCII sanatına dönüştürün</p>
+    </header>
+
+    <div class="main-content">
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" data-tab="upload">📤 Yükle</div>
+          <div class="tab" data-tab="url">🌐 URL</div>
+        </div>
+
+        <div class="tab-content active" id="upload-tab">
+          <h2><i>📤</i> Resim Yükle</h2>
+          
+          <div class="upload-area" id="uploadArea">
+            <i>📁</i>
+            <p>Bir resim dosyası sürükleyip bırakın veya tıklayarak seçin</p>
+            <p class="small">(JPG, PNG, GIF, WebP)</p>
+            <div class="progress-bar">
+              <div class="progress" id="uploadProgress"></div>
+            </div>
+          </div>
+          
+          <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+          
+          <div class="preview-container">
+            <img id="imagePreview" alt="Önizleme" />
+          </div>
+        </div>
+
+        <div class="tab-content" id="url-tab">
+          <h2><i>🌐</i> URL'den Yükle</h2>
+          <div class="control-group">
+            <label for="imageUrl">Resim URL'si:</label>
+            <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg" />
+          </div>
+          <div class="actions">
+            <button class="btn" id="loadUrlBtn">
+              <i>🌐</i> URL'den Yükle
+            </button>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <div class="control-group">
+            <label for="widthControl">Genişlik: <span id="widthValue">80</span>px</label>
+            <input type="range" id="widthControl" min="20" max="200" value="80" />
+          </div>
+          
+          <div class="control-group">
+            <label for="fontSizeControl">Yazı Boyutu: <span id="fontSizeValue">7</span>px</label>
+            <input type="range" id="fontSizeControl" min="4" max="12" value="7" step="0.5" />
+          </div>
+          
+          <div class="control-group">
+            <label for="brightnessControl">Parlaklık: <span id="brightnessValue">0</span>%</label>
+            <input type="range" id="brightnessControl" min="-50" max="50" value="0" />
+          </div>
+          
+          <div class="control-group">
+            <label for="contrastControl">Kontrast: <span id="contrastValue">0</span>%</label>
+            <input type="range" id="contrastControl" min="-50" max="50" value="0" />
+          </div>
+        </div>
+        
+        <div class="control-group">
+          <label>ASCII Karakter Seti:</label>
+          <select id="charSetSelect">
+            <option value="standard">Standart: @%#*+=-:. </option>
+            <option value="detailed">Detaylı: $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'. </option>
+            <option value="simple">Basit: █▓▒░ </option>
+            <option value="blocks">Bloklar: █▇▆▅▄▃▂▁ </option>
+            <option value="inverted">Ters: .:-=+*#%@</option>
+          </select>
+        </div>
+        
+        <div class="control-group">
+          <label>Renk:</label>
+          <div class="color-picker">
+            <div class="color-option active" style="background-color: #0f0;" data-color="#0f0"></div>
+            <div class="color-option" style="background-color: #f00;" data-color="#f00"></div>
+            <div class="color-option" style="background-color: #0ff;" data-color="#0ff"></div>
+            <div class="color-option" style="background-color: #ff0;" data-color="#ff0"></div>
+            <div class="color-option" style="background-color: #f0f;" data-color="#f0f"></div>
+            <div class="color-option" style="background-color: #fff;" data-color="#fff"></div>
+          </div>
+        </div>
+
+        <div class="advanced-controls">
+          <h3>Hızlı Ayarlar</h3>
+          <div class="presets">
+            <button class="preset-btn" data-preset="low">Düşük Kalite</button>
+            <button class="preset-btn" data-preset="medium">Orta Kalite</button>
+            <button class="preset-btn" data-preset="high">Yüksek Kalite</button>
+            <button class="preset-btn" data-preset="retro">Retro</button>
+          </div>
+        </div>
+        
+        <div class="actions">
+          <button class="btn" id="convertBtn">
+            <i>🔄</i> Dönüştür
+          </button>
+          <button class="btn btn-secondary" id="copyBtn">
+            <i>📋</i> Kopyala
+          </button>
+          <button class="btn btn-secondary" id="downloadBtn">
+            <i>💾</i> İndir
+          </button>
+          <button class="btn btn-secondary" id="resetBtn">
+            <i>🔄</i> Sıfırla
+          </button>
+        </div>
+      </div>
+      
+      <div class="card">
+        <h2><i>🖼️</i> ASCII Çıktısı</h2>
+        
+        <div class="loading" id="loadingIndicator">
+          <div class="spinner"></div>
+          <p>Dönüştürülüyor...</p>
+        </div>
+        
+        <div class="ascii-output-container">
+          <pre id="ascii-output">Resim yükleyin ve dönüştür butonuna tıklayın</pre>
+        </div>
+        
+        <div class="actions">
+          <button class="btn btn-secondary" id="toggleInvertBtn">
+            <i>🔄</i> Ters Çevir
+          </button>
+        </div>
+
+        <div class="export-options">
+          <div class="export-option">
+            <button class="btn btn-secondary" id="exportHtmlBtn">
+              <i>📄</i> HTML Olarak
+            </button>
+          </div>
+          <div class="export-option">
+            <button class="btn btn-secondary" id="exportImageBtn">
+              <i>🖼️</i> Resim Olarak
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>© 2023 ASCII Dönüştürücü | Tüm hakları saklıdır</p>
+    </footer>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <canvas id="hiddenCanvas" style="display:none;"></canvas>
+
+  <script>
+    // DOM elementleri
+    const imageInput = document.getElementById('imageInput');
+    const uploadArea = document.getElementById('uploadArea');
+    const imagePreview = document.getElementById('imagePreview');
+    const asciiOutput = document.getElementById('ascii-output');
+    const canvas = document.getElementById('hiddenCanvas');
+    const ctx = canvas.getContext('2d');
+    const convertBtn = document.getElementById('convertBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const toggleInvertBtn = document.getElementById('toggleInvertBtn');
+    const widthControl = document.getElementById('widthControl');
+    const widthValue = document.getElementById('widthValue');
+    const fontSizeControl = document.getElementById('fontSizeControl');
+    const fontSizeValue = document.getElementById('fontSizeValue');
+    const brightnessControl = document.getElementById('brightnessControl');
+    const brightnessValue = document.getElementById('brightnessValue');
+    const contrastControl = document.getElementById('contrastControl');
+    const contrastValue = document.getElementById('contrastValue');
+    const charSetSelect = document.getElementById('charSetSelect');
+    const colorOptions = document.querySelectorAll('.color-option');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const notification = document.getElementById('notification');
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const imageUrl = document.getElementById('imageUrl');
+    const loadUrlBtn = document.getElementById('loadUrlBtn');
+    const exportHtmlBtn = document.getElementById('exportHtmlBtn');
+    const exportImageBtn = document.getElementById('exportImageBtn');
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    const uploadProgress = document.getElementById('uploadProgress');
+
+    // ASCII karakter setleri
+    const charSets = {
+      standard: ["@", "%", "#", "*", "+", "=", "-", ":", ".", " "],
+      detailed: ["$", "@", "B", "%", "8", "&", "W", "M", "#", "*", "o", "a", "h", "k", "b", "d", "p", "q", "w", "m", "Z", "O", "0", "Q", "L", "C", "J", "U", "Y", "X", "z", "c", "v", "u", "n", "x", "r", "j", "f", "t", "/", "\\", "|", "(", ")", "1", "{", "}", "[", "]", "?", "-", "_", "+", "~", "<", ">", "i", "!", "l", "I", ";", ":", ",", "\"", "^", "`", "'", ".", " "],
+      simple: ["█", "▓", "▒", "░", " "],
+      blocks: ["█", "▇", "▆", "▅", "▄", "▃", "▂", "▁", " "],
+      inverted: [".", ":", "-", "=", "+", "*", "#", "%", "@"]
+    };
+
+    // Değişkenler
+    let currentImage = null;
+    let isInverted = false;
+    let currentColor = "#0f0";
+
+    // Olay dinleyicileri
+    uploadArea.addEventListener('click', () => imageInput.click());
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.style.background = 'rgba(0, 255, 0, 0.1)';
+    });
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.style.background = '';
+    });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.style.background = '';
+      if (e.dataTransfer.files.length) {
+        imageInput.files = e.dataTransfer.files;
+        handleImageUpload();
+      }
+    });
+
+    imageInput.addEventListener('change', handleImageUpload);
+    convertBtn.addEventListener('click', convertToAscii);
+    copyBtn.addEventListener('click', copyAscii);
+    downloadBtn.addEventListener('click', downloadAscii);
+    resetBtn.addEventListener('click', resetAll);
+    toggleInvertBtn.addEventListener('click', toggleInvert);
+    loadUrlBtn.addEventListener('click', loadImageFromUrl);
+    exportHtmlBtn.addEventListener('click', exportAsHtml);
+    exportImageBtn.addEventListener('click', exportAsImage);
+
+    // Tab işlemleri
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabId = tab.getAttribute('data-tab');
+        
+        // Aktif tab'ı değiştir
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // İlgili içeriği göster
+        tabContents.forEach(content => {
+          content.classList.remove('active');
+          if (content.id === `${tabId}-tab`) {
+            content.classList.add('active');
+          }
+        });
+      });
+    });
+
+    // Preset butonları
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const preset = btn.getAttribute('data-preset');
+        applyPreset(preset);
+        
+        // Aktif preset'i göster
+        presetBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Kontrol değişiklikleri
+    widthControl.addEventListener('input', () => {
+      widthValue.textContent = widthControl.value;
+      if (currentImage) convertToAscii();
+    });
+
+    fontSizeControl.addEventListener('input', () => {
+      fontSizeValue.textContent = fontSizeControl.value;
+      asciiOutput.style.fontSize = `${fontSizeControl.value}px`;
+    });
+
+    brightnessControl.addEventListener('input', () => {
+      brightnessValue.textContent = brightnessControl.value;
+      if (currentImage) convertToAscii();
+    });
+
+    contrastControl.addEventListener('input', () => {
+      contrastValue.textContent = contrastControl.value;
+      if (currentImage) convertToAscii();
+    });
+
+    charSetSelect.addEventListener('change', () => {
+      if (currentImage) convertToAscii();
+    });
+
+    // Renk seçimi
+    colorOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        colorOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        currentColor = option.getAttribute('data-color');
+        asciiOutput.style.color = currentColor;
+      });
+    });
+
+    // Resim yükleme işlemi
+    function handleImageUpload() {
+      const file = imageInput.files[0];
+      if (!file) return;
+
+      // Dosya türü kontrolü
+      if (!file.type.match('image.*')) {
+        showNotification('Lütfen bir resim dosyası seçin!', 'error');
+        return;
+      }
+
+      // İlerleme çubuğunu sıfırla
+      uploadProgress.style.width = '0%';
+
+      const reader = new FileReader();
+      
+      reader.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percentLoaded = Math.round((e.loaded / e.total) * 100);
+          uploadProgress.style.width = `${percentLoaded}%`;
+        }
+      };
+      
+      reader.onload = function(e) {
+        uploadProgress.style.width = '100%';
+        currentImage = new Image();
+        currentImage.onload = function() {
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'block';
+          convertToAscii();
+        };
+        currentImage.src = e.target.result;
+      };
+      
+      reader.onerror = function() {
+        showNotification('Dosya okuma hatası!', 'error');
+        uploadProgress.style.width = '0%';
+      };
+      
+      reader.readAsDataURL(file);
+    }
+
+    // URL'den resim yükleme
+    function loadImageFromUrl() {
+      const url = imageUrl.value.trim();
+      if (!url) {
+        showNotification('Lütfen bir URL girin!', 'error');
+        return;
+      }
+
+      // İlerleme çubuğunu sıfırla
+      uploadProgress.style.width = '0%';
+
+      currentImage = new Image();
+      currentImage.crossOrigin = "Anonymous";
+      
+      currentImage.onload = function() {
+        uploadProgress.style.width = '100%';
+        imagePreview.src = url;
+        imagePreview.style.display = 'block';
+        convertToAscii();
+        showNotification('Resim başarıyla yüklendi!');
+      };
+      
+      currentImage.onerror = function() {
+        showNotification('Resim yüklenirken hata oluştu!', 'error');
+        uploadProgress.style.width = '0%';
+      };
+      
+      // Yükleme simülasyonu
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += 5;
+        uploadProgress.style.width = `${progress}%`;
+        if (progress >= 90) clearInterval(progressInterval);
+      }, 100);
+      
+      currentImage.src = url;
+    }
+
+    // ASCII'ye dönüştürme
+    function convertToAscii() {
+      if (!currentImage) {
+        showNotification('Lütfen önce bir resim yükleyin!', 'error');
+        return;
+      }
+
+      loadingIndicator.style.display = 'block';
+      
+      // Tarayıcının işlemi bitirmesi için setTimeout kullanıyoruz
+      setTimeout(() => {
+        try {
+          const width = parseInt(widthControl.value);
+          const ratio = currentImage.height / currentImage.width;
+          const height = Math.floor(width * ratio * 0.5); // ASCII karakterler yüksekliğe göre ayarlandı
+
+          canvas.width = width;
+          canvas.height = height;
+          
+          // Parlaklık ve kontrast ayarları
+          ctx.filter = `brightness(${100 + parseInt(brightnessControl.value)}%) contrast(${100 + parseInt(contrastControl.value)}%)`;
+          ctx.drawImage(currentImage, 0, 0, width, height);
+          
+          const imgData = ctx.getImageData(0, 0, width, height).data;
+          const selectedCharSet = charSets[charSetSelect.value];
+          let asciiArt = "";
+
+          for (let y = 0; y < height; y++) {
+            let row = "";
+            for (let x = 0; x < width; x++) {
+              const index = (y * width + x) * 4;
+              const r = imgData[index];
+              const g = imgData[index + 1];
+              const b = imgData[index + 2];
+
+              // Parlaklık hesaplama (insan gözüne daha uygun)
+              const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+              
+              // Ters çevirme durumu
+              const adjustedBrightness = isInverted ? 255 - brightness : brightness;
+              
+              // Karakter indeksi hesaplama
+              const charIndex = Math.floor(adjustedBrightness / 255 * (selectedCharSet.length - 1));
+              row += selectedCharSet[charIndex];
+            }
+            asciiArt += row + "\n";
+          }
+          
+          asciiOutput.textContent = asciiArt;
+          loadingIndicator.style.display = 'none';
+        } catch (error) {
+          console.error('Dönüştürme hatası:', error);
+          showNotification('Dönüştürme sırasında bir hata oluştu!', 'error');
+          loadingIndicator.style.display = 'none';
+        }
+      }, 100);
+    }
+
+    // ASCII'yi kopyalama
+    function copyAscii() {
+      const asciiText = asciiOutput.textContent;
+      if (!asciiText || asciiText === 'Resim yükleyin ve dönüştür butonuna tıklayın') {
+        showNotification('Kopyalanacak ASCII içeriği yok!', 'error');
+        return;
+      }
+
+      navigator.clipboard.writeText(asciiText)
+        .then(() => showNotification('ASCII panoya kopyalandı!'))
+        .catch(err => {
+          console.error('Kopyalama hatası:', err);
+          showNotification('Kopyalama başarısız!', 'error');
+        });
+    }
+
+    // ASCII'yi indirme
+    function downloadAscii() {
+      const asciiText = asciiOutput.textContent;
+      if (!asciiText || asciiText === 'Resim yükleyin ve dönüştür butonuna tıklayın') {
+        showNotification('İndirilecek ASCII içeriği yok!', 'error');
+        return;
+      }
+
+      const blob = new Blob([asciiText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ascii-art.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showNotification('ASCII dosyası indirildi!');
+    }
+
+    // HTML olarak dışa aktar
+    function exportAsHtml() {
+      const asciiText = asciiOutput.textContent;
+      if (!asciiText || asciiText === 'Resim yükleyin ve dönüştür butonuna tıklayın') {
+        showNotification('Dışa aktarılacak ASCII içeriği yok!', 'error');
+        return;
+      }
+
+      const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ASCII Art</title>
+  <style>
+    body {
+      background: #000;
+      color: ${currentColor};
+      font-family: 'Courier New', monospace;
+      font-size: ${fontSizeControl.value}px;
+      line-height: 1;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    pre {
+      margin: 0;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <pre>${asciiText}</pre>
+</body>
+</html>`;
+
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ascii-art.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showNotification('HTML dosyası indirildi!');
+    }
+
+    // Resim olarak dışa aktar
+    function exportAsImage() {
+      const asciiText = asciiOutput.textContent;
+      if (!asciiText || asciiText === 'Resim yükleyin ve dönüştür butonuna tıklayın') {
+        showNotification('Dışa aktarılacak ASCII içeriği yok!', 'error');
+        return;
+      }
+
+      // Geçici bir canvas oluştur
+      const tempCanvas = document.createElement('canvas');
+      const tempCtx = tempCanvas.getContext('2d');
+      
+      // Canvas boyutlarını hesapla
+      const lines = asciiText.split('\n');
+      const lineHeight = parseInt(fontSizeControl.value);
+      const charWidth = parseInt(fontSizeControl.value) * 0.6;
+      
+      tempCanvas.width = Math.max(...lines.map(line => line.length)) * charWidth;
+      tempCanvas.height = lines.length * lineHeight;
+      
+      // Arka planı siyah yap
+      tempCtx.fillStyle = '#000';
+      tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+      
+      // Metni çiz
+      tempCtx.font = `${fontSizeControl.value}px 'Courier New', monospace`;
+      tempCtx.fillStyle = currentColor;
+      tempCtx.textBaseline = 'top';
+      
+      lines.forEach((line, index) => {
+        tempCtx.fillText(line, 0, index * lineHeight);
+      });
+      
+      // Resmi indir
+      tempCanvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'ascii-art.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showNotification('Resim olarak indirildi!');
+      });
+    }
+
+    // Ters çevirme
+    function toggleInvert() {
+      isInverted = !isInverted;
+      toggleInvertBtn.innerHTML = isInverted ? '<i>🔄</i> Normal' : '<i>🔄</i> Ters Çevir';
+      if (currentImage) convertToAscii();
+    }
+
+    // Preset uygulama
+    function applyPreset(preset) {
+      switch(preset) {
+        case 'low':
+          widthControl.value = 40;
+          widthValue.textContent = '40';
+          charSetSelect.value = 'simple';
+          break;
+        case 'medium':
+          widthControl.value = 80;
+          widthValue.textContent = '80';
+          charSetSelect.value = 'standard';
+          break;
+        case 'high':
+          widthControl.value = 120;
+          widthValue.textContent = '120';
+          charSetSelect.value = 'detailed';
+          break;
+        case 'retro':
+          widthControl.value = 60;
+          widthValue.textContent = '60';
+          charSetSelect.value = 'blocks';
+          brightnessControl.value = 20;
+          brightnessValue.textContent = '20';
+          contrastControl.value = 30;
+          contrastValue.textContent = '30';
+          break;
+      }
+      
+      if (currentImage) convertToAscii();
+    }
+
+    // Sıfırlama
+    function resetAll() {
+      imageInput.value = '';
+      imagePreview.style.display = 'none';
+      asciiOutput.textContent = 'Resim yükleyin ve dönüştür butonuna tıklayın';
+      currentImage = null;
+      widthControl.value = 80;
+      widthValue.textContent = '80';
+      fontSizeControl.value = 7;
+      fontSizeValue.textContent = '7';
+      asciiOutput.style.fontSize = '7px';
+      brightnessControl.value = 0;
+      brightnessValue.textContent = '0';
+      contrastControl.value = 0;
+      contrastValue.textContent = '0';
+      charSetSelect.value = 'standard';
+      isInverted = false;
+      toggleInvertBtn.innerHTML = '<i>🔄</i> Ters Çevir';
+      imageUrl.value = '';
+      uploadProgress.style.width = '0%';
+      
+      // Varsayılan rengi geri yükle
+      colorOptions.forEach(opt => opt.classList.remove('active'));
+      colorOptions[0].classList.add('active');
+      currentColor = "#0f0";
+      asciiOutput.style.color = currentColor;
+      
+      // Varsayılan tab'ı göster
+      tabs.forEach(t => t.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      tabs[0].classList.add('active');
+      tabContents[0].classList.add('active');
+      
+      // Preset butonlarını sıfırla
+      presetBtns.forEach(btn => btn.classList.remove('active'));
+      
+      showNotification('Tüm ayarlar sıfırlandı!');
+    }
+
+    // Bildirim gösterme
+    function showNotification(message, type = 'success') {
+      notification.textContent = message;
+      notification.className = 'notification';
+      notification.style.background = type === 'error' ? '#f00' : '#0f0';
+      notification.style.color = type === 'error' ? '#fff' : '#000';
+      
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 10);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    // İlk yüklemede yazı boyutunu ayarla
+    asciiOutput.style.fontSize = `${fontSizeControl.value}px`;
+    asciiOutput.style.color = currentColor;
+  </script>
+</body>
+</html>
