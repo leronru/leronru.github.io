@@ -2,815 +2,706 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Leron | Cybersecurity Expert & Developer</title>
-  
-  <!-- Security Meta Tags -->
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' https://formspree.io 'unsafe-inline' 'unsafe-eval';
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data:;
-    connect-src 'self' https://formspree.io;
-    frame-src 'none';
-    object-src 'none';
-  ">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+  <title>Leron | Cybersecurity Expert</title>
   
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Orbitron&display=swap" rel="stylesheet" />
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
   <style>
-    /* Reset and Base Styles */
+    :root {
+      --bg-dark: #050505;
+      --primary: #00f3ff;
+      --secondary: #bc13fe;
+      --text-main: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --glass-bg: rgba(10, 15, 30, 0.65);
+      --glass-border: rgba(0, 243, 255, 0.2);
+      --card-hover: rgba(0, 243, 255, 0.1);
+    }
+
     * {
       margin: 0; padding: 0; box-sizing: border-box;
+      scroll-behavior: smooth;
     }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: #0a0f1a;
-      color: #f0f0f0;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
       overflow-x: hidden;
-      transition: background 0.5s, color 0.5s;
+      line-height: 1.7;
     }
 
-    /* Theme Toggle */
-    #themeToggle {
+    /* --- Background Canvas & CRT Effect --- */
+    #canvas-container {
       position: fixed;
-      top: 20px; right: 20px;
-      background: #00ffe1;
-      border: none;
-      border-radius: 50%;
-      width: 45px; height: 45px;
-      cursor: pointer;
-      box-shadow: 0 0 12px #00ffe1;
-      z-index: 1000;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem;
-      color: #0a0f1a;
-      transition: background 0.3s, color 0.3s;
-    }
-    #themeToggle:hover {
-      background: #00b8a9;
-      box-shadow: 0 0 20px #00b8a9;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, #0a1020 0%, #000000 100%);
     }
 
-    body.light {
-      background: #f2f2f2;
-      color: #121212;
-    }
-    body.light #themeToggle {
-      background: #121212;
-      color: #00ffe1;
-      box-shadow: 0 0 12px #121212;
-    }
-    body.light #themeToggle:hover {
-      background: #000;
-      box-shadow: 0 0 20px #121212;
-    }
-    body.light .project-card {
-      background: #f0f0f0;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    body.light .project-card p {
-      color: #333;
-    }
-    body.light input,
-    body.light textarea {
-      background: #e0e0e0;
-      color: #121212;
+    .scanlines {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0.6;
     }
 
-    /* Header */
+    /* --- Typography --- */
+    h1, h2, h3 {
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+    }
+
+    /* --- Header Section --- */
     header {
       height: 100vh;
-      background: linear-gradient(135deg, #001a16 0%, #00332c 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      position: relative;
       padding: 0 20px;
-      position: relative;
-      color: #00ffe1;
-      font-family: 'Orbitron', sans-serif;
-      box-shadow: inset 0 0 300px rgba(0, 0, 0, 0.8);
-      background-image:
-        radial-gradient(circle at 10% 20%, rgba(0, 255, 225, 0.1) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(0, 255, 225, 0.1) 0%, transparent 20%),
-        linear-gradient(135deg, #001a16 0%, #00332c 100%);
     }
 
-    header h1 {
-      font-size: 4rem;
-      letter-spacing: 10px;
-      text-shadow: 0 0 10px #00ffe1, 0 0 20px #00ffe1;
-      margin-bottom: 10px;
-      animation: glow 3s ease-in-out infinite alternate;
-    }
-
-    header h2 {
-      font-weight: 300;
-      font-size: 1.5rem;
-      color: #ccfffbdd;
-      font-family: 'Poppins', sans-serif;
-      min-height: 40px;
-      padding: 0 10px;
-      display: inline-block;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #00ffe1, 0 0 10px #00ffe1; }
-      to { text-shadow: 0 0 20px #00ffe1, 0 0 40px #00ffe1; }
-    }
-
-    /* Typing Effect */
-    .typing {
-      border-right: 3px solid #00ffe1;
-      white-space: nowrap;
-      overflow: hidden;
-      margin: 0 auto;
-      animation: typing 4s steps(30) infinite, blink 0.75s step-end infinite;
-    }
-
-    @keyframes typing {
-      0%, 100% { width: 0; }
-      50% { width: 100%; }
-    }
-    @keyframes blink {
-      0%, 100% { border-color: transparent; }
-      50% { border-color: #00ffe1; }
-    }
-
-    /* Navigation */
-    nav {
-      background: #020612dd;
-      position: sticky;
-      top: 0;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 15px 0;
-      z-index: 100;
-      box-shadow: 0 0 15px #00ffe1aa;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: #00ffe1;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 1rem;
-      text-decoration: none;
-      letter-spacing: 2px;
-      transition: color 0.3s;
-      position: relative;
-      padding: 5px 0;
-    }
-    nav a::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 3px;
-      background: #00ffe1;
-      transition: width 0.3s ease, left 0.3s ease;
-    }
-    nav a:hover::after,
-    nav a.active::after {
-      width: 100%;
-      left: 0;
-    }
-    nav a:hover {
+    h1 {
+      font-size: 6rem;
+      font-weight: 900;
       color: #fff;
+      position: relative;
+      letter-spacing: 5px;
+      text-shadow: 0 0 20px var(--primary);
+      animation: text-flicker 3s infinite alternate;
     }
 
-    /* Hamburger Menu */
-    .hamburger {
-      display: none;
-      cursor: pointer;
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1100;
-      background: #00ffe1;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 12px #00ffe1;
-      transition: transform 0.3s;
+    /* Glitch Effect */
+    h1::before, h1::after {
+      content: "LERON";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: var(--bg-dark);
     }
-    .hamburger:hover {
-      transform: scale(1.1);
+    h1::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00c1;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim 5s infinite linear alternate-reverse;
     }
-    .hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background: #0a0f1a;
-      margin: 2px 0;
-      transition: 0.3s;
-    }
-    .hamburger.active span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
+    h1::after {
+      left: -2px;
+      text-shadow: -1px 0 #00fff9;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim2 5s infinite linear alternate-reverse;
     }
 
-    /* Mobile Navigation */
-    .mobile-nav {
+    h2.subtitle {
+      font-size: 1.8rem;
+      color: var(--primary);
+      font-weight: 300;
+      margin-top: 20px;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+    }
+
+    /* --- Navigation --- */
+    nav {
       position: fixed;
       top: 0;
-      left: -100%;
-      width: 70%;
-      height: 100vh;
-      background: #020612ee;
-      z-index: 1050;
+      width: 100%;
+      padding: 20px 50px;
       display: flex;
-      flex-direction: column;
-      padding: 80px 20px 20px;
-      transition: left 0.4s ease;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    }
-    .mobile-nav.active {
-      left: 0;
-    }
-    .mobile-nav a {
-      color: #00ffe1;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 1.2rem;
-      text-decoration: none;
-      letter-spacing: 2px;
-      padding: 15px;
-      margin: 5px 0;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    .mobile-nav a:hover,
-    .mobile-nav a.active {
-      background: #00ffe122;
-    }
-
-    /* Sections */
-    section {
-      max-width: 900px;
-      margin: 60px auto;
-      padding: 0 20px;
-    }
-    section h2 {
-      font-family: 'Orbitron', sans-serif;
-      color: #00ffe1;
-      font-size: 2.8rem;
-      margin-bottom: 25px;
-      border-bottom: 3px solid #00ffe1;
-      padding-bottom: 5px;
-      letter-spacing: 2px;
-    }
-    section p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      color: inherit;
-    }
-
-    /* Skills */
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
-    .skills span {
-      background: #00ffe1;
-      color: #000;
-      padding: 12px 20px;
-      border-radius: 25px;
-      font-weight: 700;
-      box-shadow: 0 0 10px #00ffe1aa;
-      user-select: none;
-      transition: transform 0.3s;
-      cursor: default;
-    }
-    .skills span:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px #00fff1;
-    }
-
-    /* Projects */
-    #projects {
-      background: #121212;
-      color: #e0e0e0;
-      padding: 50px 20px;
-    }
-    #projects h2 {
-      text-align: center;
-      font-size: 2.8rem;
-      margin-bottom: 40px;
-      color: #00ffe1;
-    }
-    .projects-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 25px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .project-card {
-      background: #1f1f1f;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 8px 20px rgba(0,255,225,0.15);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
       justify-content: space-between;
-    }
-    .project-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 12px 30px rgba(0,255,225,0.35);
-    }
-    .project-card h3 {
-      margin-bottom: 15px;
-      color: #00ffe1;
-      font-size: 1.8rem;
-    }
-    .project-card p {
-      flex-grow: 1;
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #ccc;
-      margin-bottom: 20px;
-    }
-    .project-card .btn {
-      background: #00ffe1;
-      color: #121212;
-      padding: 10px 20px;
-      border-radius: 25px;
-      text-align: center;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      display: inline-block;
-      width: fit-content;
-    }
-    .project-card .btn:hover {
-      background: #00bfa1;
-      color: white;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(5, 5, 5, 0.8);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid var(--glass-border);
     }
 
-    /* Contact */
-    #contact {
-      text-align: center;
-    }
-    #contact p {
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #contact a {
-      color: #00ffe1;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-    #contact a:hover {
-      color: #00fff1;
-    }
-
-    /* Form */
-    form {
-      max-width: 600px;
-      margin: 30px auto 0;
+    .nav-links {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    input, textarea {
-      padding: 15px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-family: 'Poppins', sans-serif;
-      resize: none;
-      box-shadow: 0 0 8px #00ffe144;
-      background: #111a21;
-      color: #f0f0f0;
-      transition: box-shadow 0.3s;
-    }
-    input:focus, textarea:focus {
-      outline: none;
-      box-shadow: 0 0 12px #00ffe1;
-      background: #121f29;
-    }
-    button {
-      padding: 15px;
-      background: #00ffe1;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: #000;
-      box-shadow: 0 0 20px #00ffe1aa;
-      transition: background 0.3s;
-      min-height: 44px;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: #00b8a9;
+      gap: 40px;
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #00ffe1aa;
+    .nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
       font-weight: 600;
       font-size: 0.9rem;
-      border-top: 1px solid #00ffe144;
-      margin-top: 50px;
+      letter-spacing: 2px;
+      position: relative;
+      transition: color 0.3s;
     }
 
-    /* Responsive Design */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px; left: 0;
+      width: 0; height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* --- Scroll Reveal Animation Class --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- Sections --- */
+    section {
+      max-width: 1100px;
+      margin: 120px auto;
+      padding: 0 20px;
+      position: relative;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      margin-bottom: 50px;
+      color: #fff;
+      border-left: 5px solid var(--primary);
+      padding-left: 20px;
+      text-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 800px;
+    }
+
+    /* --- Skills --- */
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .skill-tag {
+      padding: 10px 25px;
+      background: rgba(0, 243, 255, 0.05);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      border-radius: 50px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.1);
+    }
+
+    .skill-tag:hover {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 20px var(--primary);
+      transform: translateY(-5px);
+    }
+
+    /* --- Projects Grid --- */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      padding: 30px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: 0.5s;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--primary);
+      box-shadow: 0 10px 30px rgba(0, 243, 255, 0.15);
+    }
+
+    .card h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      color: #bbb;
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+      min-height: 80px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 100%;
+      background: var(--primary);
+      z-index: -1;
+      transition: width 0.3s;
+    }
+
+    .btn:hover {
+      color: #000;
+      box-shadow: 0 0 20px var(--primary);
+    }
+
+    .btn:hover::after {
+      width: 100%;
+    }
+
+    /* --- Contact Form --- */
+    .contact-wrapper {
+      background: var(--glass-bg);
+      padding: 40px;
+      border-radius: 15px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 15px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid #333;
+      color: #fff;
+      border-radius: 5px;
+      font-family: 'Poppins', sans-serif;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      padding: 15px 40px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-family: 'Orbitron', sans-serif;
+      clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+      transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #fff;
+      box-shadow: 0 0 20px var(--primary);
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    /* --- Mobile Responsive --- */
     @media (max-width: 768px) {
-      header h1 {
-        font-size: 3.5rem;
-        letter-spacing: 8px;
-      }
-      header h2 {
-        font-size: 1.3rem;
-        min-height: 50px;
-      }
-      section h2 {
-        font-size: 2.3rem;
-      }
-      .skills span {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-      }
-      form {
-        max-width: 100%;
-      }
-
-      /* Hamburger menu mobile */
-      .hamburger {
-        display: flex;
-      }
-      nav {
-        display: none;
-      }
-
-      /* Project grid */
-      .projects-container {
-        grid-template-columns: 1fr;
-      }
-
-      /* Theme button size */
-      #themeToggle {
-        width: 55px;
-        height: 55px;
-        font-size: 1.8rem;
-      }
+      h1 { font-size: 3.5rem; }
+      nav { padding: 20px; flex-direction: column; gap: 20px; }
+      .nav-links { gap: 20px; flex-wrap: wrap; justify-content: center; }
+      .section-title { font-size: 2rem; }
     }
 
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 2.5rem;
-        letter-spacing: 5px;
+    /* --- Animations Keyframes --- */
+    @keyframes glitch-anim {
+      0% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.85deg); }
+      5% { clip: rect(70px, 9999px, 19px, 0); transform: skew(0.04deg); }
+      10% { clip: rect(26px, 9999px, 86px, 0); transform: skew(0.55deg); }
+      15% { clip: rect(5px, 9999px, 12px, 0); transform: skew(0.66deg); }
+      20% { clip: rect(49px, 9999px, 64px, 0); transform: skew(0.24deg); }
+      25% { clip: rect(95px, 9999px, 20px, 0); transform: skew(0.15deg); }
+      30% { clip: rect(35px, 9999px, 69px, 0); transform: skew(0.96deg); }
+      35% { clip: rect(86px, 9999px, 7px, 0); transform: skew(0.07deg); }
+      40% { clip: rect(14px, 9999px, 24px, 0); transform: skew(0.58deg); }
+      45% { clip: rect(60px, 9999px, 52px, 0); transform: skew(0.32deg); }
+      50% { clip: rect(38px, 9999px, 93px, 0); transform: skew(0.89deg); }
+      55% { clip: rect(10px, 9999px, 58px, 0); transform: skew(0.46deg); }
+      60% { clip: rect(54px, 9999px, 41px, 0); transform: skew(0.78deg); }
+      65% { clip: rect(88px, 9999px, 12px, 0); transform: skew(0.23deg); }
+      70% { clip: rect(25px, 9999px, 63px, 0); transform: skew(0.14deg); }
+      75% { clip: rect(73px, 9999px, 37px, 0); transform: skew(0.65deg); }
+      80% { clip: rect(40px, 9999px, 86px, 0); transform: skew(0.92deg); }
+      85% { clip: rect(12px, 9999px, 15px, 0); transform: skew(0.37deg); }
+      90% { clip: rect(66px, 9999px, 78px, 0); transform: skew(0.18deg); }
+      95% { clip: rect(95px, 9999px, 33px, 0); transform: skew(0.83deg); }
+      100% { clip: rect(2px, 9999px, 89px, 0); transform: skew(0.06deg); }
+    }
+    @keyframes glitch-anim2 {
+      0% { clip: rect(65px, 9999px, 100px, 0); transform: skew(0.3deg); }
+      100% { clip: rect(5px, 9999px, 50px, 0); transform: skew(0.3deg); }
+    }
+    @keyframes text-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 0 0 20px var(--primary), 0 0 10px var(--secondary);
+        opacity: 1;
       }
-      header h2 {
-        font-size: 1.1rem;
-      }
-      section {
-        margin: 40px auto;
-      }
-      section h2 {
-        font-size: 2rem;
-      }
-
-      .typing {
-        white-space: normal;
-        border-right: none;
-        animation: none;
-      }
-
-      /* Form inputs */
-      input, textarea, button {
-        padding: 12px;
+      20%, 24%, 55% {
+        text-shadow: none;
+        opacity: 0.5;
       }
     }
   </style>
-  
-  <!-- Clickjacking protection -->
-  <style id="anti-clickjack">body{display:none !important;}</style>
 </head>
 <body>
 
-  <div class="hamburger" aria-label="Open Menu" role="button" tabindex="0">
-    <span></span>
-    <span></span>
-    <span></span>
+  <!-- Dynamic Background -->
+  <div id="canvas-container">
+    <canvas id="networkCanvas"></canvas>
   </div>
+  
+  <!-- CRT Scanlines Overlay -->
+  <div class="scanlines"></div>
 
-  <div class="mobile-nav">
-    <a href="#about" class="active">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </div>
-
-  <button id="themeToggle" aria-label="Toggle Theme">🌙</button>
-
-  <header>
-    <h1>Leron</h1>
-    <h2><span id="typed-text" class="typing"></span></h2>
-  </header>
-
+  <!-- Navigation -->
   <nav>
-    <a href="#about" class="active">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
+    <div style="font-family:'Orbitron'; font-weight:700; color:#fff; font-size:1.5rem;">LERON<span style="color:var(--primary)">.</span></div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
   </nav>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>
-      Hello, I'm Leron! A cybersecurity expert specializing in penetration testing and software development. I navigate the dark corners of the security world with passion - finding and patching vulnerabilities, writing code, and optimizing systems is what drives me.
-    </p>
-  </section>
+  <!-- Header -->
+  <header>
+    <h1>LERON</h1>
+    <h2 class="subtitle" id="typing-text"></h2>
+  </header>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills">
-      <span>Python</span>
-      <span>JavaScript</span>
-      <span>HTML5 & CSS3</span>
-      <span>Linux</span>
-      <span>Metasploit</span>
-      <span>Burp Suite</span>
-      <span>Exploit Development</span>
-      <span>Network Analysis</span>
-      <span>Web Security</span>
-      <span>Reverse Engineering</span>
-    </div>
-  </section>
-
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects-container">
-      <div class="project-card">
-        <h3>Interface Penster Tool</h3>
-        <p>A powerful and comprehensive penetration testing tool with user-friendly interface for professionals.</p>
-        <a href="https://github.com/leronru/interface-pentest-tool.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+  <main>
+    <!-- About Section -->
+    <section id="about">
+      <div class="reveal">
+        <h2 class="section-title">About Me</h2>
+        <p>
+          Hello, I'm Leron! A cybersecurity expert specializing in penetration testing and software development. I navigate the dark corners of the security world with passion - finding and patching vulnerabilities, writing code, and optimizing systems is what drives me.
+        </p>
       </div>
+    </section>
 
-      <div class="project-card">
-        <h3>InfiNet</h3>
-        <p>Advanced network penetration testing tool with terminal interface, MITM capabilities and automated reporting. 🚀 For educational purposes only.</p>
-        <a href="https://github.com/leronru/InfiNet.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+    <!-- Skills Section -->
+    <section id="skills">
+      <div class="reveal">
+        <h2 class="section-title">My Arsenal</h2>
+        <div class="skills-container">
+          <div class="skill-tag">Python</div>
+          <div class="skill-tag">JavaScript</div>
+          <div class="skill-tag">HTML5 & CSS3</div>
+          <div class="skill-tag">Linux</div>
+          <div class="skill-tag">Metasploit</div>
+          <div class="skill-tag">Burp Suite</div>
+          <div class="skill-tag">Exploit Development</div>
+          <div class="skill-tag">Network Analysis</div>
+          <div class="skill-tag">Web Security</div>
+          <div class="skill-tag">Reverse Engineering</div>
+        </div>
       </div>
+    </section>
 
-      <div class="project-card">
-        <h3>TrackCell</h3>
-        <p>Performs OSINT analysis on phone numbers. Provides location, carrier, timezone and WhatsApp status. Conducts Google searches and scans related documents. For responsible use and educational purposes only.</p>
-        <a href="https://github.com/leronru/TrackCell.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+    <!-- Projects Section -->
+    <section id="projects">
+      <div class="reveal">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+          
+          <!-- NEW PROJECT ADDED: Sentinital -->
+          <article class="card">
+            <h3>Sentinital</h3>
+            <p>Real-time hybrid threat detection system for web applications. Instantly detects SQLi, XSS, DDoS, and brute-force attacks using ML & deep learning with comprehensive reporting. 🛡️</p>
+            <a href="https://github.com/leronru/Sentinital.git" class="btn" target="_blank" rel="noopener noreferrer">View Details</a>
+          </article>
+
+          <!-- Project 1 -->
+          <article class="card">
+            <h3>Interface Penster Tool</h3>
+            <p>A powerful and comprehensive penetration testing tool with user-friendly interface for professionals.</p>
+            <a href="https://github.com/leronru/interface-pentest-tool.git" class="btn" target="_blank" rel="noopener noreferrer">View Details</a>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="card">
+            <h3>InfiNet</h3>
+            <p>Advanced network penetration testing tool with terminal interface, MITM capabilities and automated reporting. 🚀 For educational purposes only.</p>
+            <a href="https://github.com/leronru/InfiNet.git" class="btn" target="_blank" rel="noopener noreferrer">View Details</a>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="card">
+            <h3>TrackCell</h3>
+            <p>Performs OSINT analysis on phone numbers. Provides location, carrier, timezone and WhatsApp status. Conducts Google searches and scans related documents. For responsible use and educational purposes only.</p>
+            <a href="https://github.com/leronru/TrackCell.git" class="btn" target="_blank" rel="noopener noreferrer">View Details</a>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="card">
+            <h3>LeronLock</h3>
+            <p>Educational tool for initiating Instagram account closure process. Used for ethical hacking and security testing. Unauthorized use is illegal.</p>
+            <a href="https://github.com/leronru/LeronLock.git" class="btn" target="_blank" rel="noopener noreferrer">View Details</a>
+          </article>
+
+          <!-- Project 5 -->
+          <article class="card">
+            <h3>Telegram Spam Reporter</h3>
+            <p>Powerful Telegram spam reporting tool with multi-account support, customizable report reasons and automated reporting features. Includes smart delay system to reduce ban risk. Developed by Leronru.</p>
+            <a href="https://github.com/leronru/TG-ReportMaster.git" class="btn" target="_blank" rel="noopener noreferrer">View Details</a>
+          </article>
+
+          <!-- Project 6 -->
+          <article class="card">
+            <h3>SpoofMaster</h3>
+            <p>Professional email spoofing tool for security experts and pentesters. Allows sending spoofed emails using Gmail SMTP. Colorful user-friendly interface for educational and testing purposes. Always obtain permission before use.</p>
+            <a href="https://github.com/leronru/SpoofMaster.git" class="btn" target="_blank" rel="noopener noreferrer">View Details</a>
+          </article>
+
+        </div>
       </div>
+    </section>
 
-      <div class="project-card">
-        <h3>LeronLock</h3>
-        <p>Educational tool for initiating Instagram account closure process. Used for ethical hacking and security testing. Unauthorized use is illegal.</p>
-        <a href="https://github.com/leronru/LeronLock.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="reveal">
+        <h2 class="section-title">Initialize Connection</h2>
+        <div class="contact-wrapper">
+          <p style="margin-bottom: 20px; color: var(--primary);">Use the form below to get in touch with me:</p>
+          <form id="contactForm" action="https://formspree.io/f/mdkzjppg" method="POST">
+            <div class="form-group">
+              <input type="text" id="name" name="name" placeholder="Name" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <input type="email" id="email" name="email" placeholder="Email" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <textarea id="message" name="message" rows="5" placeholder="Message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Transmission</button>
+          </form>
+          <p id="formResponse" style="margin-top: 15px; font-weight: bold;"></p>
+        </div>
       </div>
-
-      <div class="project-card">
-        <h3>Telegram Spam Reporter</h3>
-        <p>Powerful Telegram spam reporting tool with multi-account support, customizable report reasons and automated reporting features. Includes smart delay system to reduce ban risk. Developed by Leronru.</p>
-        <a href="https://github.com/leronru/TG-ReportMaster.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
-      </div>
-
-      <div class="project-card">
-        <h3>SpoofMaster</h3>
-        <p>Professional email spoofing tool for security experts and pentesters. Allows sending spoofed emails using Gmail SMTP. Colorful user-friendly interface for educational and testing purposes. Always obtain permission before use.</p>
-        <a href="https://github.com/leronru/SpoofMaster.git" class="btn" target="_blank" rel="noopener noreferrer nofollow">Details & Download</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Use the form below to get in touch with me:</p>
-
-    <form id="contactForm" action="https://formspree.io/f/mdkzjppg" method="POST">
-      <div class="form-row">
-        <input type="text" id="name" name="name" placeholder="Your Name" required minlength="2" maxlength="50" pattern="[A-Za-zğüşıöçĞÜŞİÖÇ\s]+" title="Please enter a valid name" />
-        <input type="email" id="email" name="email" placeholder="Your Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Please enter a valid email" />
-      </div>
-      <textarea id="message" name="message" rows="5" placeholder="Your Message" required minlength="10" maxlength="1000"></textarea>
-      <input type="hidden" name="_gotcha" style="display:none">
-      <button type="submit">Send</button>
-    </form>
-
-    <p id="formResponse" style="margin-top: 15px;"></p>
-  </section>
+    </section>
+  </main>
 
   <footer>
     &copy; 2025 Leron | All Rights Reserved.
   </footer>
 
   <script>
-    // Clickjacking protection
-    if (self === top) {
-      document.getElementById('anti-clickjack').remove();
-    } else {
-      top.location = self.location;
-    }
-
-    // Console warning
-    console.log('%c⛔ This area is for security experts only!', 'color: red; font-size: 14px;');
+    /* --- 1. Canvas Network Animation --- */
+    const canvas = document.getElementById('networkCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
     
-    // Theme toggler
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-      themeToggle.textContent = document.body.classList.contains('light') ? '🌞' : '🌙';
-    });
+    // Resize
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
-    // Check saved theme
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light');
-      themeToggle.textContent = '🌞';
+    // Particle Class
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.size = Math.random() * 2 + 1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        // Bounce off edges
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = '#00f3ff';
+        ctx.fill();
+      }
     }
 
-    // Hamburger menu
-    const hamburger = document.querySelector('.hamburger');
-    const mobileNav = document.querySelector('.mobile-nav');
-
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      mobileNav.classList.toggle('active');
-    });
-
-    // Close menu
-    document.querySelectorAll('.mobile-nav a').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        mobileNav.classList.remove('active');
-      });
-    });
-
-    // Menu link active state (on scroll)
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('nav a, .mobile-nav a');
-
-    function updateActiveMenu() {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        if (pageYOffset >= sectionTop) {
-          current = section.getAttribute('id');
-        }
-      });
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').substring(1) === current) {
-          link.classList.add('active');
-        }
-      });
+    // Init Particles
+    const particleCount = window.innerWidth < 768 ? 40 : 80;
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
     }
 
-    window.addEventListener('scroll', updateActiveMenu, { passive: true });
+    // Animation Loop
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Update and draw particles
+      particles.forEach((p, index) => {
+        p.update();
+        p.draw();
+        
+        // Draw lines between close particles
+        for (let j = index + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distance = Math.sqrt(dx*dx + dy*dy);
+          
+          if (distance < 150) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 243, 255, ${1 - distance/150})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
 
-    // Typing effect
-    const words = [
-      "Penetration Tester",
-      "Software Developer",
-      "Cybersecurity Enthusiast",
-      "Ethical Hacker",
-      "Python & JavaScript Expert"
-    ];
+    /* --- 2. Typing Effect --- */
+    const textElement = document.getElementById('typing-text');
+    const words = ["Penetration Tester", "Software Developer", "Cybersecurity Enthusiast", "Ethical Hacker", "Python Expert"];
     let wordIndex = 0;
     let charIndex = 0;
-    const typedText = document.getElementById('typed-text');
-
+    let isDeleting = false;
+    
     function type() {
-      if(charIndex < words[wordIndex].length) {
-        typedText.textContent += words[wordIndex].charAt(charIndex);
-        charIndex++;
-        setTimeout(type, 150);
-      } else {
-        setTimeout(erase, 2000);
-      }
-    }
-
-    function erase() {
-      if(charIndex > 0) {
-        typedText.textContent = words[wordIndex].substring(0, charIndex - 1);
+      const currentWord = words[wordIndex];
+      if (isDeleting) {
+        textElement.innerText = currentWord.substring(0, charIndex - 1);
         charIndex--;
-        setTimeout(erase, 100);
       } else {
-        wordIndex++;
-        if(wordIndex >= words.length) wordIndex = 0;
+        textElement.innerText = currentWord.substring(0, charIndex + 1);
+        charIndex++;
+      }
+      
+      if (!isDeleting && charIndex === currentWord.length) {
+        isDeleting = true;
+        setTimeout(type, 2000);
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
         setTimeout(type, 500);
+      } else {
+        setTimeout(type, isDeleting ? 50 : 100);
       }
     }
+    type();
 
-    // Typing effect on mobile
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.innerWidth > 480) {
-        setTimeout(type, 1000);
-      } else {
-        typedText.textContent = "Cybersecurity Expert";
-      }
-      updateActiveMenu();
-    });
-
-    // Form submission
-    const contactForm = document.getElementById('contactForm');
-    const formResponse = document.getElementById('formResponse');
-
-    // XSS protected sanitization
-    const sanitizeInput = (input) => {
-      if (!input) return '';
-      return input.toString()
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#x27;')
-        .replace(/\//g, '&#x2F;');
-    };
-
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      // Get and sanitize form data
-      const name = sanitizeInput(document.getElementById('name').value.trim());
-      const email = sanitizeInput(document.getElementById('email').value.trim());
-      const message = sanitizeInput(document.getElementById('message').value.trim());
-
-      if (!name || !email || !message) {
-        formResponse.style.color = '#ff5555';
-        formResponse.textContent = 'Please fill all fields.';
-        return;
-      }
-
-      // Send data to formspree.io
-      fetch(contactForm.action, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          message: message,
-          _subject: 'New Contact Form Message'
-        }),
-        credentials: 'omit',
-        mode: 'cors',
-        cache: 'no-store'
-      })
-      .then(response => {
-        if (response.ok) {
-          formResponse.style.color = '#00ffe1';
-          formResponse.textContent = `Thank you ${name}! Your message has been sent successfully. I'll get back to you soon.`;
-          contactForm.reset();
-        } else {
-          throw new Error('Form submission failed');
+    /* --- 3. Scroll Reveal Animation --- */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
         }
-      })
-      .catch(error => {
-        formResponse.style.color = '#ff5555';
-        formResponse.textContent = 'An error occurred. Please try again later or send an email directly.';
-        console.error('Form submission error:', error);
       });
-    });
+    }, { threshold: 0.1 });
 
-    // External link confirmation
-    document.querySelectorAll('a[target="_blank"]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        if (!confirm('You are being redirected to an external site. Do you want to continue?')) {
-          e.preventDefault();
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* --- 4. Form Handling (AJAX) --- */
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button');
+      const responseText = document.getElementById('formResponse');
+      const originalText = btn.innerText;
+      
+      btn.innerText = 'Sending...';
+      btn.style.opacity = '0.7';
+      
+      const formData = new FormData(this);
+      
+      fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          responseText.style.color = '#00f3ff';
+          responseText.innerText = 'Message transmitted successfully.';
+          this.reset();
+        } else {
+          responseText.style.color = '#ff3333';
+          responseText.innerText = 'Transmission failed. Try again.';
         }
+      }).catch(error => {
+        responseText.style.color = '#ff3333';
+        responseText.innerText = 'Connection error.';
+      }).finally(() => {
+        btn.innerText = originalText;
+        btn.style.opacity = '1';
       });
     });
   </script>
 </body>
-    </html>
+</html>
