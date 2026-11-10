@@ -199,20 +199,6 @@ Potential improvements and planned features:
 - [ ] Additional export formats.
 - [ ] Enhanced mobile experience.
 
-🤝 Contributing
-
-Contributions, suggestions and bug reports are welcome!
-
-If you have an idea that could improve the project, feel free to open an Issue or submit a Pull Request.
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Submit a Pull Request.
-
-📄 License
-
-License information can be added here according to the license selected for this repository.
 
 ---
 
